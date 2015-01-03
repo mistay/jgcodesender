@@ -326,10 +326,46 @@ public class Mainform extends JPanel {
 		frame.getContentPane().add(hundert);
 		hundert.setBounds(300 + 400, 30, 30, 30);
 
-		JButton home = new JButton("home");
-		frame.getContentPane().add(home);
-		home.setBounds(800, 30, 100, 30);
-		home.addActionListener(new ActionListener() {
+		JButton homex = new JButton("home x");
+		frame.getContentPane().add(homex);
+		homex.setBounds(790, 30, 100, 30);
+		homex.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Main.getInstance()._test.raw("G28 X");
+
+			}
+		});
+
+		JButton homey = new JButton("home y");
+		frame.getContentPane().add(homey);
+		homey.setBounds(920, 30, 100, 30);
+		homey.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Main.getInstance()._test.raw("G28 Y");
+
+			}
+		});
+
+		JButton homez = new JButton("home z");
+		frame.getContentPane().add(homez);
+		homez.setBounds(1050, 30, 100, 30);
+		homez.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Main.getInstance()._test.raw("G28 Z");
+
+			}
+		});
+
+		JButton homeall = new JButton("homeall");
+		frame.getContentPane().add(homeall);
+		homeall.setBounds(1150, 0, 100, 30);
+		homeall.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
