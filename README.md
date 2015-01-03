@@ -1,6 +1,6 @@
 jgcodesender
 ============
-java gui program (runs on macos, win, linux, ..) that sends g-code to cnc machines (marlin, smoothieboard).
+java g-code sender: java gui program (runs on macos, win, linux, ..) that sends g-code to cnc machines (marlin, smoothieboard).
 
 current status
 ==============
