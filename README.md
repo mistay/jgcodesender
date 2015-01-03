@@ -37,11 +37,6 @@ Unpacking objects: 100% (39/39), done.
 
 Checking connectivity... done.
 
-armins-MacBook-Pro:foo arminlanghofer$ ls
-
-jgcodesender
-
-
 $ cd jgcodesender/
 
 $ ./build.sh 1>/dev/null
