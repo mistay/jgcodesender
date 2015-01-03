@@ -326,6 +326,18 @@ public class Mainform extends JPanel {
 		frame.getContentPane().add(hundert);
 		hundert.setBounds(300 + 400, 30, 30, 30);
 
+		JButton home = new JButton("home");
+		frame.getContentPane().add(home);
+		home.setBounds(800, 30, 100, 30);
+		home.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Main.getInstance()._test.raw("G28");
+
+			}
+		});
+
 		final JLabel mousex = new JLabel();
 		mousex.setBounds(0, 520, 50, 30);
 		frame.getContentPane().add(mousex);
@@ -448,14 +460,15 @@ public class Mainform extends JPanel {
 			}
 		});
 
-		txt.setText(Easyfile.getFileContents("/Users/arminlanghofer/snullv2top.nc"));
+		txt.setText(Easyfile
+				.getFileContents("/Users/arminlanghofer/snullv2top.nc"));
 
 		frame.setSize(1600, 900);
 		// frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setLayout(null);
 		frame.setVisible(true);
 	}
- 
+
 	public void setMachineX(Float x) {
 
 		machinex.setText("X: " + x);
