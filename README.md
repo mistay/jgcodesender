@@ -1,5 +1,24 @@
 jgcodesender
 ============
+java gui program (runs on macos, win, linux, ..) that sends g-code to cnc machines (marlin, smoothieboard).
+
+current status
+==============
+under heavy development. unstable.
+
+features
+========
+- move all axis by clicking a point in a 2D graphics for both x/y and z axis
+- home x, y, z and all axis
+
+links
+=====
+
+marlin:  https://github.com/ErikZalm/Marlin
+
+smoothieboard: http://smoothieware.org/smoothieboard
+
+shapeoko: http://www.shapeoko.com
 
 
 build
