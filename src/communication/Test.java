@@ -139,9 +139,39 @@ public class Test {
 		}
 
 		private void parse() {
+
+			// marlin
 			Pattern p = Pattern
 					.compile("Count X: *([0-9.]*) Y:([0-9.]*) Z:([0-9.]*)\n");
 			Matcher m = p.matcher(_sb);
+			if (m.find()) {
+				// System.out.println("match: " + m.group(1));
+				// System.out.println("match: " + m.group(2));
+				// System.out.println("match: " + m.group(3));
+
+				// System.out.println("m.end(): " + m.end());
+				// System.out.println("now in buffer: " + _sb.length());
+
+				// System.out.println("start parsing");
+				Float x = Float.parseFloat(m.group(1));
+				Float y = Float.parseFloat(m.group(2));
+				Float z = Float.parseFloat(m.group(3));
+				// System.out.println("done parsing");
+
+				cutoff(m.end());
+
+				Main.getInstance()._mainform.setMachineX(x);
+				Main.getInstance()._mainform.setMachineY(y);
+				// System.out.println("set y");
+
+				Main.getInstance()._mainform.setMachineZ(z);
+				// System.out.println("set z");
+
+			}
+
+			// smoothieboard
+			p = Pattern.compile("A: *([0-9.]*) B:([0-9.]*) C:([0-9.]*)\n");
+			m = p.matcher(_sb);
 			if (m.find()) {
 				// System.out.println("match: " + m.group(1));
 				// System.out.println("match: " + m.group(2));
