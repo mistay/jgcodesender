@@ -1,5 +1,6 @@
 package communication;
 
+import gcode.Commands;
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
@@ -18,8 +19,8 @@ import jgcodesender.Main;
 
 public class Test {
 
-	public SerialReader sr = null;
-	public SerialWriter sw = null;
+	public SerialReader sr = new SerialReader();
+	public SerialWriter sw = new SerialWriter();
 
 	private void cleanupVar() {
 
@@ -90,8 +91,8 @@ public class Test {
 				InputStream in = serialPort.getInputStream();
 				OutputStream out = serialPort.getOutputStream();
 
-				sr = new SerialReader(in);
-				sw = new SerialWriter(out);
+				sr.in = in;
+				sw.out = out;
 
 				(new Thread(sr)).start();
 				(new Thread(sw)).start();
@@ -108,6 +109,10 @@ public class Test {
 		private InputStream in;
 
 		StringBuffer _sb = new StringBuffer();
+
+		public SerialReader() {
+
+		}
 
 		public SerialReader(InputStream in) {
 			this.in = in;
@@ -140,6 +145,13 @@ public class Test {
 
 		private void parse() {
 
+			System.out.println("parse: " + _sb.toString());
+			if (_sb.toString().toLowerCase().equals("ok")) {
+
+				Main.getInstance()._gcodesender.getCurrentCommand().executedSuccessfully = true;
+				Main.getInstance()._gcodesender.handleCommandResult();
+			}
+
 			// marlin
 			Pattern p = Pattern
 					.compile("Count X: *([0-9.]*) Y:([0-9.]*) Z:([0-9.]*)\n");
@@ -170,21 +182,21 @@ public class Test {
 			}
 
 			// smoothieboard
-			p = Pattern.compile("A: *([0-9.]*) B:([0-9.]*) C:([0-9.]*)\n");
+			p = Pattern.compile("A:([0-9.]*) B:([0-9.]*) C:([0-9.]*)");
 			m = p.matcher(_sb);
 			if (m.find()) {
-				// System.out.println("match: " + m.group(1));
-				// System.out.println("match: " + m.group(2));
-				// System.out.println("match: " + m.group(3));
+				System.out.println("match: " + m.group(1));
+				System.out.println("match: " + m.group(2));
+				System.out.println("match: " + m.group(3));
 
-				// System.out.println("m.end(): " + m.end());
-				// System.out.println("now in buffer: " + _sb.length());
+				System.out.println("m.end(): " + m.end());
+				System.out.println("now in buffer: " + _sb.length());
 
-				// System.out.println("start parsing");
+				System.out.println("start parsing");
 				Float x = Float.parseFloat(m.group(1));
 				Float y = Float.parseFloat(m.group(2));
 				Float z = Float.parseFloat(m.group(3));
-				// System.out.println("done parsing");
+				System.out.println("done parsing");
 
 				cutoff(m.end());
 
@@ -202,6 +214,9 @@ public class Test {
 	/** */
 	public static class SerialWriter implements Runnable {
 		private OutputStream out;
+
+		public SerialWriter() {
+		}
 
 		public SerialWriter(OutputStream out) {
 			this.out = out;
@@ -223,56 +238,17 @@ public class Test {
 
 	}
 
-	int x = 10;
-
-	public void foo() {
-
-	}
-
-	public void motorsoff() {
-
-		x += 5;
-		String s = "M18\n";
-
-		sw.write(s);
-	}
-
+	
 	public void raw(String string) {
 		String s = string + "\n";
 
 		sw.write(s);
 	}
+	
+	public void sendCommand(Commands command) {
 
-	public void queryposition() {
-		String s = "M114\n";
-		sw.write(s);
+		raw(command.getFullCommand());
+		Main.getInstance()._mainform.machineCommand(command);
 
 	}
-
-	public void movetoX(Float x) {
-		String s = "G0 X" + x + "\n";
-		sw.write(s);
-	}
-
-	public void movetoY(Float y) {
-		String s = "G0 Y" + y + "\n";
-		sw.write(s);
-	}
-
-	public void movetoZ(Float z) {
-		String s = "G0 Z" + z + "\n";
-		sw.write(s);
-	}
-
-	public void movetoXY(Float x, Float y) {
-		String s = "G0 X" + x + " Y" + y + "\n";
-		sw.write(s);
-	}
-
-	public void moveto(Float x2, Float y, Float z) {
-
-		String s = "G0 X" + x2 + " Y" + y + " Z" + z + "\n";
-		sw.write(s);
-	}
-
 }
