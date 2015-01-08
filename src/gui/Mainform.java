@@ -1,5 +1,6 @@
 package gui;
 
+import gcode.*;
 import helpers.Easyfile;
 
 import java.awt.Color;
@@ -15,6 +16,9 @@ import java.io.File;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import jgcodesender.Main;
 
@@ -32,10 +36,15 @@ public class Mainform extends JPanel {
 			}
 
 			while (true) {
-				System.out.println("isinit: " + Main.isInitialized());
-				if (Main.isInitialized()) {
-					Main.getInstance()._test.queryposition();
 
+				if (Main.getInstance()._mainform.jc != null
+						&& Main.getInstance()._mainform.jc.isSelected()) {
+					System.out.println("isinit: " + Main.isInitialized());
+					if (Main.isInitialized()) {
+						Main.getInstance()._test.sendCommand(GCodeFactory
+								.queryposition());
+
+					}
 				}
 				try {
 					Thread.sleep(2000);
@@ -56,6 +65,8 @@ public class Mainform extends JPanel {
 	public JLabel machinex = null;
 	public JLabel machiney = null;
 	public JLabel machinez = null;
+	JLabel machineunits = null;
+	JCheckBox jc = null;
 
 	Millingtable fraestisch = null;
 	Zheight zheight = null;
@@ -68,6 +79,10 @@ public class Mainform extends JPanel {
 		Thread t = (new Thread(new PositionPoller()));
 		t.start();
 
+		jc = new JCheckBox("continously query position");
+		frame.getContentPane().add(jc);
+		jc.setBounds(800, 50, 300, 30);
+
 		JButton start = new JButton("start");
 		frame.getContentPane().add(start);
 		start.setBounds(1000, 300, 100, 30);
@@ -75,14 +90,25 @@ public class Mainform extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("cursor: " + txt.getSelectedText());
-				Main.getInstance()._test.raw(txt.getSelectedText());
+				Main.getInstance()._gcodesender.enabled = true;
+				System.out.println("trying to notify()");
+
+				Main.getInstance()._gcodesender.handleCommandResult();
+				System.out.println("done with notify()");
+
 			}
 		});
 
 		JButton stop = new JButton("stop");
 		frame.getContentPane().add(stop);
 		stop.setBounds(1000, 350, 100, 30);
+		stop.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Main.getInstance()._gcodesender.enabled = false;
+			}
+		});
 
 		JButton reset = new JButton("reset");
 		frame.getContentPane().add(reset);
@@ -92,6 +118,16 @@ public class Mainform extends JPanel {
 		frame.getContentPane().add(emergency);
 		emergency.setBounds(1000, 450, 100, 30);
 
+		emergency.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				boolean succ = Main.getInstance()._gcodereader
+						.load("/Users/arminlanghofer/snullv2top.nc");
+				System.out.println("read gcode: " + succ);
+
+			}
+		});
+
 		JButton motoroff = new JButton("motoroff");
 		frame.getContentPane().add(motoroff);
 		motoroff.setBounds(1000, 500, 100, 30);
@@ -99,8 +135,7 @@ public class Mainform extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Main.getInstance()._test.motorsoff();
-
+				Main.getInstance()._test.sendCommand(GCodeFactory.motorsoff());
 			}
 		});
 
@@ -186,7 +221,7 @@ public class Mainform extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Main.getInstance()._test.raw(jtf.getText());
+				// Main.getInstance()._test.raw(jtf.getText());
 			}
 		});
 
@@ -240,25 +275,28 @@ public class Mainform extends JPanel {
 
 				}
 				if (x != null && y != null && z != null) {
-					Main.getInstance()._test.moveto(x, y, z);
+					Main.getInstance()._test.sendCommand(GCodeFactory.moveto(x,
+							y, z));
 					return;
 				}
 				if (z != null) {
-					Main.getInstance()._test.movetoZ(z);
+					Main.getInstance()._test.sendCommand(GCodeFactory
+							.movetoZ(z));
 					return;
 				}
 
 				if (x != null && y != null) {
-					Main.getInstance()._test.movetoXY(x, y);
+					Main.getInstance()._test.sendCommand(GCodeFactory.movetoXY(
+							x, y));
 					return;
 				}
 				if (x != null) {
-					Main.getInstance()._test.movetoX(x);
-					return;
+					Main.getInstance()._test.sendCommand(GCodeFactory
+							.movetoX(x));
 				}
 				if (y != null) {
-					Main.getInstance()._test.movetoY(y);
-					return;
+					Main.getInstance()._test.sendCommand(GCodeFactory
+							.movetoY(y));
 				}
 
 			}
@@ -281,8 +319,8 @@ public class Mainform extends JPanel {
 		right.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				Main.getInstance()._test.queryposition();
+				Main.getInstance()._test.sendCommand(GCodeFactory
+						.queryposition());
 
 			}
 		});
@@ -333,7 +371,7 @@ public class Mainform extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Main.getInstance()._test.raw("G28 X");
+				// Main.getInstance()._test.raw("G28 X");
 
 			}
 		});
@@ -345,7 +383,7 @@ public class Mainform extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Main.getInstance()._test.raw("G28 Y");
+				// Main.getInstance()._test.raw("G28 Y");
 
 			}
 		});
@@ -357,7 +395,7 @@ public class Mainform extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Main.getInstance()._test.raw("G28 Z");
+				// Main.getInstance()._test.raw("G28 Z");
 
 			}
 		});
@@ -369,7 +407,7 @@ public class Mainform extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Main.getInstance()._test.raw("G28");
+				// Main.getInstance()._test.raw("G28");
 
 			}
 		});
@@ -409,6 +447,13 @@ public class Mainform extends JPanel {
 		Border border3 = BorderFactory.createLineBorder(Color.BLACK, 2);
 		machinez.setBorder(border3);
 
+		machineunits = new JLabel();
+		machineunits.setBounds(1300, 0, 200, 30);
+		frame.getContentPane().add(machineunits);
+		machineunits.setText("Machine Units:");
+		Border border4 = BorderFactory.createLineBorder(Color.BLACK, 2);
+		machineunits.setBorder(border4);
+
 		zheight = new Zheight();
 		frame.getContentPane().add(zheight);
 		zheight.setBounds(210, 300, 10, 200);
@@ -445,8 +490,8 @@ public class Mainform extends JPanel {
 
 				// todo: pixels in echte maschinenkoordinaten umrechnen
 
-				Main.getInstance()._test.movetoZ(new Float(zheight.getHeight()
-						- e.getY()));
+				Main.getInstance()._test.sendCommand(GCodeFactory
+						.movetoZ(new Float(zheight.getHeight() - e.getY())));
 
 			}
 		});
@@ -491,13 +536,14 @@ public class Mainform extends JPanel {
 				fraestisch.tooly_should = (tmpy);
 				fraestisch.updateUI();
 
-				Main.getInstance()._test.movetoXY(tmpx, tmpy);
+				Main.getInstance()._test.sendCommand(GCodeFactory.movetoXY(
+						tmpx, tmpy));
 
 			}
 		});
 
-		txt.setText(Easyfile
-				.getFileContents("/Users/arminlanghofer/snullv2top.nc"));
+		// txt.setText(Easyfile
+		// .getFileContents("/Users/arminlanghofer/snullv2top.nc"));
 
 		frame.setSize(1600, 900);
 		// frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -536,4 +582,49 @@ public class Mainform extends JPanel {
 		}
 	}
 
+	public void updateGCode() {
+
+		StyledDocument doc = txt.getStyledDocument();
+
+		Style style = txt.addStyle("I'm a Style", null);
+		StyleConstants.setForeground(style, Color.red);
+		for (Commands command : Main.getInstance()._gcodereader.gCodeCommands) {
+			insertLine(txt, command);
+		}
+
+	}
+
+	public void setMachineUnits(boolean milimeters) {
+		String text = milimeters ? "millimeters" : "inch";
+		machineunits.setText("Machine Units: " + text);
+	}
+
+	public void machineCommand(Commands command) {
+		insertLine(txt2, command);
+	}
+
+	private void insertLine(JTextPane txt, Commands command) {
+		StyledDocument doc = txt.getStyledDocument();
+
+		Style style = txt.addStyle("I'm a Style", null);
+		StyleConstants.setForeground(style, Color.red);
+		try {
+			if (command.getCommand() == "") {
+				StyleConstants.setForeground(style, Color.red);
+				doc.insertString(doc.getLength(), command.toString(), style);
+			}
+			StyleConstants.setForeground(style, Color.green);
+			doc.insertString(doc.getLength(), command.getCommand() + " ", style);
+			StyleConstants.setForeground(style, Color.blue);
+			doc.insertString(doc.getLength(), command.getArgs(), style);
+			StyleConstants.setForeground(style, Color.black);
+			doc.insertString(doc.getLength(), " ;" + command.getDescription()
+					+ "\n", style);
+
+		} catch (Exception e) {
+			System.out.println("error inserting command: " + e.getMessage());
+			e.printStackTrace();
+		}
+
+	}
 }
