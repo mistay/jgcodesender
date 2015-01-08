@@ -1,12 +1,14 @@
 package jgcodesender;
 
-import java.io.File;
 import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import communication.Test;
 import millingmachines.Shapeoko2;
+import gcode.Gcodereader;
+import gcode.Gcodesender;
+import gcode.commands.GCodeStyle;
 import gui.Mainform;
 import gui.Settings;
 
@@ -27,6 +29,9 @@ public class Main {
 
 	public Mainform _mainform = null;
 	public Test _test = null;
+	public Gcodereader _gcodereader = null;
+	public GCodeStyle _gcodestyle = null;
+	public Gcodesender _gcodesender = null;
 
 	private Main() {
 
@@ -34,9 +39,19 @@ public class Main {
 
 		_test = new Test();
 		_test.tryToConnect();
-	}
+		_gcodestyle = new GCodeStyle() {
 
-	
+			@Override
+			public boolean trailingZero() {
+				return true;
+			}
+		};
+		_gcodereader = new Gcodereader();
+		_gcodesender = new Gcodesender();
+		System.out.println("starting gcodesender");
+		
+		_gcodesender.start();
+	}
 
 	public static void main(String[] args) {
 		Main.getInstance();
