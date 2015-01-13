@@ -1,16 +1,11 @@
 package jgcodesender;
 
-import java.util.prefs.Preferences;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import communication.Test;
-import millingmachines.Shapeoko2;
 import gcode.Gcodereader;
 import gcode.Gcodesender;
 import gcode.commands.GCodeStyle;
 import gui.Mainform;
-import gui.Settings;
+
+import communication.Test;
 
 public class Main {
 
@@ -49,7 +44,7 @@ public class Main {
 		_gcodereader = new Gcodereader();
 		_gcodesender = new Gcodesender();
 		System.out.println("starting gcodesender");
-		
+
 		_gcodesender.start();
 	}
 
