@@ -10,6 +10,12 @@ public class Millingtable extends javax.swing.JPanel {
 
 	Float toolx_should = 0.0F;
 	Float tooly_should = 0.0F;
+	/*
+	 * Float width_real = 0.0F; Float height_real = 0.0F;
+	 * 
+	 * public enum Orientation { NW, NE, SW, SE } private Orientation
+	 * orientation = Orientation.NE;
+	 */
 
 	private static final long serialVersionUID = 1L;
 
