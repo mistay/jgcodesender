@@ -1,20 +1,29 @@
 package gui;
 
-import gcode.*;
+import gcode.Commands;
+import gcode.GCodeFactory;
 import helpers.Easyfile;
 
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.border.Border;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
@@ -23,6 +32,8 @@ import javax.swing.text.StyledDocument;
 import jgcodesender.Main;
 
 public class Mainform extends JPanel {
+
+	private static final long serialVersionUID = 1L;
 
 	public static class PositionPoller implements Runnable {
 
