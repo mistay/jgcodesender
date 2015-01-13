@@ -4,9 +4,7 @@ import gcode.Commands;
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
-import gui.Mainform;
 import gui.Settings;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -238,13 +236,12 @@ public class Test {
 
 	}
 
-	
 	public void raw(String string) {
 		String s = string + "\n";
 
 		sw.write(s);
 	}
-	
+
 	public void sendCommand(Commands command) {
 
 		raw(command.getFullCommand());
