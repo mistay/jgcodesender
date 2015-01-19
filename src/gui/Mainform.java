@@ -79,7 +79,12 @@ public class Mainform extends JPanel {
 	JLabel machineunits = null;
 	JCheckBox jc = null;
 
-	Millingtable fraestisch = null;
+	public Millingtable _millingtable = null;
+
+	public Millingtable getMillingtable() {
+		return _millingtable;
+	}
+
 	Zheight zheight = null;
 	JTextPane txt = null;
 
@@ -507,17 +512,17 @@ public class Mainform extends JPanel {
 			}
 		});
 
-		fraestisch = new Millingtable();
-		frame.getContentPane().add(fraestisch);
-		fraestisch.setBounds(0, 300, 200, 200);
-		fraestisch
+		_millingtable = new Millingtable();
+		frame.getContentPane().add(_millingtable);
+		_millingtable.setBounds(0, 300, 200, 200);
+		_millingtable
 				.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
 					public void mouseMoved(java.awt.event.MouseEvent evt) {
 						mousex.setText("X: " + evt.getX());
 						mousey.setText("Y: " + evt.getY());
 					}
 				});
-		fraestisch.addMouseListener(new MouseListener() {
+		_millingtable.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 			}
@@ -543,9 +548,9 @@ public class Mainform extends JPanel {
 				Float tmpx = new Float(e.getX());
 				Float tmpy = new Float(e.getY());
 
-				fraestisch.toolx_should = (tmpx);
-				fraestisch.tooly_should = (tmpy);
-				fraestisch.updateUI();
+				_millingtable.toolx_should = (tmpx);
+				_millingtable.tooly_should = (tmpy);
+				_millingtable.updateUI();
 
 				Main.getInstance()._test.sendCommand(GCodeFactory.movetoXY(
 						tmpx, tmpy));
@@ -565,18 +570,18 @@ public class Mainform extends JPanel {
 	public void setMachineX(Float x) {
 
 		machinex.setText("X: " + x);
-		if (fraestisch != null) {
-			fraestisch.toolx = x;
-			fraestisch.updateUI();
+		if (_millingtable != null) {
+			_millingtable.toolx = x;
+			_millingtable.updateUI();
 		}
 	}
 
 	public void setMachineY(Float y) {
 
 		machiney.setText("Y: " + y);
-		if (fraestisch != null) {
-			fraestisch.tooly = y;
-			fraestisch.updateUI();
+		if (_millingtable != null) {
+			_millingtable.tooly = y;
+			_millingtable.updateUI();
 		}
 	}
 
@@ -612,6 +617,7 @@ public class Mainform extends JPanel {
 
 	public void machineCommand(Commands command) {
 		insertLine(txt2, command);
+		command.updateUI();
 	}
 
 	private void insertLine(JTextPane txt, Commands command) {
@@ -624,6 +630,12 @@ public class Mainform extends JPanel {
 				StyleConstants.setForeground(style, Color.red);
 				doc.insertString(doc.getLength(), command.toString(), style);
 			}
+
+			if (command.linenumber > -1) {
+				doc.insertString(doc.getLength(), "" + command.linenumber
+						+ ": ", style);
+			}
+
 			StyleConstants.setForeground(style, Color.green);
 			doc.insertString(doc.getLength(), command.getCommand() + " ", style);
 			StyleConstants.setForeground(style, Color.blue);
@@ -636,6 +648,13 @@ public class Mainform extends JPanel {
 			System.out.println("error inserting command: " + e.getMessage());
 			e.printStackTrace();
 		}
+
+	}
+
+	public void setGcodetarget(Float x, Float y, Float z) {
+		_millingtable.setGcodetarget(x, y);
+
+		// todo: z pos visualisieren
 
 	}
 }

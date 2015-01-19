@@ -10,6 +10,22 @@ public class Millingtable extends javax.swing.JPanel {
 
 	Float toolx_should = 0.0F;
 	Float tooly_should = 0.0F;
+
+	private Float _gcodetargetx = 0.0F;
+	private Float _gcodetargety = 0.0F;
+
+	public void setGcodetarget(Float gcodetargetx, Float gcodetargety) {
+		if (gcodetargetx != null)
+			_gcodetargetx = gcodetargetx;
+
+		if (gcodetargety != null)
+			_gcodetargety = gcodetargety;
+
+		//System.out.println("gcodemoving to: " + gcodetargetx.toString() + " / "
+		//		+ gcodetargety.toString());
+		this.updateUI();
+	}
+
 	/*
 	 * Float width_real = 0.0F; Float height_real = 0.0F;
 	 * 
@@ -32,6 +48,9 @@ public class Millingtable extends javax.swing.JPanel {
 
 		g.setColor(Color.black);
 		g.fillOval(toolx.intValue(), tooly.intValue(), 5, 5);
+
+		g.setColor(Color.pink);
+		g.fillOval(_gcodetargetx.intValue(), _gcodetargety.intValue(), 5, 5);
 
 	}
 }

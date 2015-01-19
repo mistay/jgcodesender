@@ -12,6 +12,8 @@ public abstract class Commands {
 	protected String rawcommand = "";
 	public boolean executedSuccessfully = false;
 
+	public int linenumber = -1;
+
 	public String getCommand() {
 		if (Main.getInstance()._gcodestyle.trailingZero() && commandnumber < 10)
 			return command + "0" + commandnumber;
@@ -50,5 +52,6 @@ public abstract class Commands {
 	public abstract String getDescription();
 
 	public void updateUI() {
+
 	}
 }

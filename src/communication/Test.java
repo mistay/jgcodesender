@@ -142,12 +142,20 @@ public class Test {
 		}
 
 		private void parse() {
+			System.out.println("parse()"
+					+ _sb.toString().replace("\n", "[\\n]"));
+			// System.out.println("parse: " + _sb.toString());
 
-			System.out.println("parse: " + _sb.toString());
-			if (_sb.toString().toLowerCase().equals("ok")) {
+			String SEARCHFOR = "ok";
 
+			int pos;
+			if ((pos = _sb.toString().toLowerCase().indexOf(SEARCHFOR)) > -1) {
+
+				System.out
+						.println("read -OK- from machine, notifying gcodesender!!");
 				Main.getInstance()._gcodesender.getCurrentCommand().executedSuccessfully = true;
 				Main.getInstance()._gcodesender.handleCommandResult();
+				cutoff(pos + SEARCHFOR.length());
 			}
 
 			// marlin
@@ -225,9 +233,12 @@ public class Test {
 
 		public void write(String s) {
 			byte[] b = s.getBytes();
-			System.out.println("wrote: " + s.replace("\n", "[\\n]"));
+
 			try {
-				out.write(b);
+				if (out != null) {
+					out.write(b);
+					System.out.println("wrote: " + s.replace("\n", "[\\n]"));
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

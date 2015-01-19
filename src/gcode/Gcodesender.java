@@ -22,22 +22,27 @@ public class Gcodesender extends Thread {
 			System.out.println("Gcodesender::run()");
 
 			Gcodereader gcodereader = Main.getInstance()._gcodereader;
-			if (linenumber > gcodereader.gCodeCommands.size()) {
-				System.out.println("finished gcodes. disabling myself.");
-				enabled = false;
-				linenumber = 1;
-			} else {
+
+			do {
 				if (enabled) {
 					System.out.println("Gcodesender: <- enabled");
 					currentCommand = gcodereader.gCodeCommands.get(linenumber);
+					currentCommand.linenumber = linenumber;
 					Main.getInstance()._test.sendCommand(currentCommand);
 					// Main.getInstance()._test.queryposition();
-
+					linenumber++;
 				} else {
 					System.out.println("Gcodesender::skipping (not enabled)");
 				}
-			}
-			linenumber++;
+
+				if (linenumber > gcodereader.gCodeCommands.size()) {
+					System.out.println("finished gcodes. disabling myself.");
+					enabled = false;
+					linenumber = 1;
+				}
+
+			} while (enabled && currentCommand != null
+					&& currentCommand.executedSuccessfully);
 
 			synchronized (this) {
 				try {

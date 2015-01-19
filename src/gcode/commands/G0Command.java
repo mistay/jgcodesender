@@ -1,6 +1,9 @@
 package gcode.commands;
 
+import jgcodesender.Main;
 import gcode.Commands;
+import gui.Mainform;
+import gui.Millingtable;
 
 public class G0Command extends Commands {
 
