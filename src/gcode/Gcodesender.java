@@ -31,11 +31,17 @@ public class Gcodesender extends Thread {
 					Main.getInstance()._test.sendCommand(currentCommand);
 					// Main.getInstance()._test.queryposition();
 					linenumber++;
+					System.out.println("size: "
+							+ gcodereader.gCodeCommands.size());
+					System.out.println("linenumber: " + linenumber);
+
+					Main.getInstance()._mainform.setProgress(linenumber,
+							gcodereader.gCodeCommands.size());
 				} else {
 					System.out.println("Gcodesender::skipping (not enabled)");
 				}
 
-				if (linenumber > gcodereader.gCodeCommands.size()) {
+				if (linenumber >= gcodereader.gCodeCommands.size()) {
 					System.out.println("finished gcodes. disabling myself.");
 					enabled = false;
 					linenumber = 1;

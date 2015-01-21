@@ -76,6 +76,9 @@ public class Mainform extends JPanel {
 	public JLabel machinex = null;
 	public JLabel machiney = null;
 	public JLabel machinez = null;
+
+	public JLabel progress = null;
+
 	JLabel machineunits = null;
 	JCheckBox jc = null;
 
@@ -463,19 +466,26 @@ public class Mainform extends JPanel {
 		Border border3 = BorderFactory.createLineBorder(Color.BLACK, 2);
 		machinez.setBorder(border3);
 
+		progress = new JLabel();
+		progress.setBounds(1040, 100, 100, 30);
+		frame.getContentPane().add(progress);
+		progress.setText("Progess: 0%");
+		Border border4 = BorderFactory.createLineBorder(Color.BLACK, 2);
+		progress.setBorder(border4);
+
 		machineunits = new JLabel();
 		machineunits.setBounds(1300, 0, 200, 30);
 		frame.getContentPane().add(machineunits);
 		machineunits.setText("Machine Units:");
-		Border border4 = BorderFactory.createLineBorder(Color.BLACK, 2);
-		machineunits.setBorder(border4);
+		Border border5 = BorderFactory.createLineBorder(Color.BLACK, 2);
+		machineunits.setBorder(border5);
 
 		zheight = new Zheight();
 		frame.getContentPane().add(zheight);
 		zheight.setBounds(210, 300, 10, 200);
 		zheight.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
 			public void mouseMoved(java.awt.event.MouseEvent evt) {
-				mousez.setText("Z: " + (zheight.getHeight() - evt.getY()));
+				mousez.setText("Z: " + (zheight.getHeight() / 2 - evt.getY()));
 			}
 		});
 		zheight.addMouseListener(new MouseListener() {
@@ -501,13 +511,14 @@ public class Mainform extends JPanel {
 				mousez.setText("mouse clicked at Z: "
 						+ (zheight.getHeight() - e.getY()));
 
-				zheight.toolz_should = new Float(zheight.getHeight() - e.getY());
+				zheight.toolz_should = new Float(zheight.getHeight() / 2
+						- e.getY());
 				zheight.updateUI();
 
 				// todo: pixels in echte maschinenkoordinaten umrechnen
 
 				Main.getInstance()._test.sendCommand(GCodeFactory
-						.movetoZ(new Float(zheight.getHeight() - e.getY())));
+						.movetoZ(new Float(zheight.getHeight() / 2 - e.getY())));
 
 			}
 		});
@@ -596,6 +607,15 @@ public class Mainform extends JPanel {
 			zheight.updateUI();
 			// System.out.println("updated ui");
 		}
+	}
+
+	public void setProgress(int current, int max) {
+		System.out.println("progress: " + current);
+		System.out.println("max: " + max);
+		Float percent = new Float(current) / new Float(max);
+		System.out.println("percent: " + percent);
+
+		progress.setText("Progress: " + (((int) (percent * 10000)) / 100 + "%"));
 	}
 
 	public void updateGCode() {

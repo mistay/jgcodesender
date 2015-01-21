@@ -18,11 +18,12 @@ public class Zheight extends javax.swing.JPanel {
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		g.setColor(Color.black);
-		g.fillRect(0, 0, this.getWidth(), this.getHeight() - toolz.intValue());
+		g.fillRect(0, 0, this.getWidth(),
+				this.getHeight() / 2 - toolz.intValue());
 
 		g.setColor(Color.red);
-		g.fillRect(0, this.getHeight() - toolz_should.intValue(),
+		g.fillRect(0, this.getHeight() / 2 - toolz_should.intValue(),
 				this.getWidth(), 2);
-		//System.out.println("filled hblack");
+		// System.out.println("filled hblack");
 	}
 }
