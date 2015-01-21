@@ -4,7 +4,8 @@ java g-code sender: java gui program (runs on macos, win, linux, ..) that sends 
 
 current status
 ==============
-under heavy development. unstable.
+under development. unstable.
+successfully ran sample g-code in samplegcode/ directory
 
 features
 ========
