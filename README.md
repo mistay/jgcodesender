@@ -1,10 +1,10 @@
 jgcodesender
 ============
-java g-code sender: java gui program (runs on macos, win, linux, ..) that sends g-code to cnc machines (marlin, smoothieboard).
+java g-code sender: java gui program (runs on macos) that sends g-code to cnc machines (marlin, smoothieboard).
 
 current status
 ==============
-under development. unstable.
+under development. unstable. but launching and partially running on shapeoko2
 successfully ran sample g-code in samplegcode/ directory
 
 features
