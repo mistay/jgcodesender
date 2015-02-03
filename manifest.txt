@@ -1,2 +1,2 @@
-Main-Class: jgcodesender.Main
+Main-Class: main.Main
 
