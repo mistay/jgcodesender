@@ -13,7 +13,7 @@ import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import jgcodesender.Main;
+import main.Main;
 
 public class Test {
 
@@ -41,7 +41,7 @@ public class Test {
 		cleanupVar();
 
 		Preferences prefs = Preferences
-				.userNodeForPackage(jgcodesender.Main.class);
+				.userNodeForPackage(main.Main.class);
 
 		String port = prefs.get(Settings.SETTING_PORT, "");
 		Integer baudrate = null;

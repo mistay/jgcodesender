@@ -12,7 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import jgcodesender.Main;
+import main.Main;
 
 public class Settings extends javax.swing.JPanel {
 
@@ -52,7 +52,7 @@ public class Settings extends javax.swing.JPanel {
 		final JTextField jtf2 = new JTextField();
 		frame.getContentPane().add(jtf2);
 		Preferences prefs = Preferences
-				.userNodeForPackage(jgcodesender.Main.class);
+				.userNodeForPackage(main.Main.class);
 		System.out.println("loaded setting baudrate: "
 				+ prefs.get(SETTING_BAUDRATE, "9600"));
 		System.out.println("loaded setting port: "
@@ -68,7 +68,7 @@ public class Settings extends javax.swing.JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Preferences prefs = Preferences
-						.userNodeForPackage(jgcodesender.Main.class);
+						.userNodeForPackage(main.Main.class);
 				prefs.put(SETTING_BAUDRATE, jtf2.getText());
 				prefs.put(SETTING_PORT, serialports.getSelectedItem()
 						.toString());

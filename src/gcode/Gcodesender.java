@@ -1,6 +1,6 @@
 package gcode;
 
-import jgcodesender.Main;
+import main.Main;
 
 public class Gcodesender extends Thread {
 

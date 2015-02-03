@@ -1,8 +1,7 @@
 package gcode.commands;
 
-import jgcodesender.Main;
+import main.Main;
 import gcode.Commands;
-import gui.Mainform;
 
 public class G1Command extends Commands {
 	public G1Command() {

@@ -1,6 +1,15 @@
 package gcode;
 
-import gcode.commands.*;
+import gcode.commands.G0Command;
+import gcode.commands.G1Command;
+import gcode.commands.G20Command;
+import gcode.commands.G21Command;
+import gcode.commands.G90Command;
+import gcode.commands.G91Command;
+import gcode.commands.M2Command;
+import gcode.commands.M3Command;
+import gcode.commands.M5Command;
+import gcode.commands.unknownCommand;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -8,12 +17,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
-import jgcodesender.Main;
+import main.Main;
 
 public class Gcodereader {
 

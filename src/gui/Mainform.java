@@ -29,7 +29,7 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import jgcodesender.Main;
+import main.Main;
 
 public class Mainform extends JPanel {
 

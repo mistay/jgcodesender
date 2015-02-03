@@ -1,4 +1,4 @@
-package jgcodesender;
+package main;
 
 import gcode.Gcodereader;
 import gcode.Gcodesender;
@@ -28,7 +28,10 @@ public class Main {
 	public GCodeStyle _gcodestyle = null;
 	public Gcodesender _gcodesender = null;
 
+	public static String VERSION = "20150203";
+
 	private Main() {
+		System.out.println("starting jgcodesender v" + VERSION);
 
 		_mainform = new Mainform();
 

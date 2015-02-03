@@ -1,8 +1,6 @@
 package gcode;
 
-import jgcodesender.Main;
-import gcode.commands.G1Command;
-import gcode.commands.GCodeStyle;
+import main.Main;
 
 public abstract class Commands {
 

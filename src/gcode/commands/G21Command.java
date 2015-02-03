@@ -1,6 +1,6 @@
 package gcode.commands;
 
-import jgcodesender.Main;
+import main.Main;
 import gcode.Commands;
 
 public class G21Command extends Commands {
